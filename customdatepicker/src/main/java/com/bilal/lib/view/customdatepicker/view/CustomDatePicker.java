@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.ViewModel;
 
 import com.bilal.lib.view.customdatepicker.R;
 import com.bilal.lib.view.customdatepicker.viewModel.CustomDatePickerViewModel;
@@ -53,6 +54,7 @@ public class CustomDatePicker extends FrameLayout {
 
     private void init(Context context,AttributeSet attributeSet) {
         mContext = context;
+        viewModel = new CustomDatePickerViewModel();
         if (attributeSet == null) {
             return;
         }

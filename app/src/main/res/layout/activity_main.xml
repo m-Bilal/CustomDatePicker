@@ -13,7 +13,15 @@
         android:layout_height="wrap_content"/>
 
     <com.bilal.lib.view.customdatepicker.view.CustomDatePicker
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <DatePicker xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:spinnersShown="true" />
 
 </LinearLayout>
