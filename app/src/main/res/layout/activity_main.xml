@@ -10,7 +10,9 @@
     <NumberPicker
         android:id="@+id/number_picker"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:background="#FFF"
+        android:layout_height="wrap_content"
+        android:selectionDividerHeight="100dp"/>
 
     <com.bilal.lib.view.customdatepicker.view.CustomDatePicker
         android:layout_width="match_parent"
