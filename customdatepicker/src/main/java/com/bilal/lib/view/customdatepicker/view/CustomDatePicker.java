@@ -23,6 +23,8 @@ public class CustomDatePicker extends FrameLayout {
     private CustomDatePickerViewModel viewModel;
     private Calendar minDate;
     private Calendar maxDate;
+    private Calendar curDate;
+    private OnDateChangedListener onDateChangedListener;
 
     public CustomDatePicker(Context context) {
         super(context);
@@ -52,6 +54,38 @@ public class CustomDatePicker extends FrameLayout {
         mYearNumberPicker = v.findViewById(R.id.picker_year);
         mMonthNumberPicker.setDisplayedValues(viewModel.getMonths());
         addView(v);
+
+        mDayNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int oldVal, int newVal) {
+                curDate.set(Calendar.DAY_OF_MONTH, newVal);
+                if (onDateChangedListener != null) {
+                    onDateChangedListener.onDateChanged(curDate);
+                }
+            }
+        });
+
+        mMonthNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int oldVal, int newVal) {
+                curDate.set(Calendar.MONTH, newVal);
+                setCorrectRangeToScroller();
+                if (onDateChangedListener != null) {
+                    onDateChangedListener.onDateChanged(curDate);
+                }
+            }
+        });
+
+        mYearNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int oldVal, int newVal) {
+                curDate.set(Calendar.YEAR, newVal);
+                setCorrectRangeToScroller();
+                if (onDateChangedListener != null) {
+                    onDateChangedListener.onDateChanged(curDate);
+                }
+            }
+        });
         return v;
     }
 
@@ -60,14 +94,16 @@ public class CustomDatePicker extends FrameLayout {
         if (attributeSet == null) {
             return;
         }
+        setDefaultDates();
         inflateXmlView();
         TypedArray typedArray = getContext().obtainStyledAttributes(attributeSet, R.styleable.CustomDatePicker);
         styleView(typedArray);
         typedArray.recycle();
-        setTestValues();
     }
 
-    private void setDefaultMinAndMaxDates() {
+    private void setDefaultDates() {
+        curDate = Calendar.getInstance();
+
         minDate = Calendar.getInstance();
         minDate.set(Calendar.DAY_OF_MONTH, 1);
         minDate.set(Calendar.MONTH, 1);
@@ -76,20 +112,20 @@ public class CustomDatePicker extends FrameLayout {
         maxDate = Calendar.getInstance();
         maxDate.set(Calendar.DAY_OF_MONTH, 31);
         maxDate.set(Calendar.MONTH, 12);
-        minDate.set(Calendar.YEAR, 2099);
+        minDate.set(Calendar.YEAR, curDate.get(Calendar.YEAR + 100));
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(Calendar date) throws DateRangeException {
+        curDate = date;
+        if (curDate.compareTo(minDate) < 0 || curDate.compareTo(maxDate) > 0) {
+            throw new DateRangeException();
+        }
+
         mDayNumberPicker.setValue(date.get(Calendar.DAY_OF_MONTH));
         mMonthNumberPicker.setValue(date.get(Calendar.MONTH));
         mYearNumberPicker.setValue(date.get(Calendar.YEAR));
 
-        mDayNumberPicker.setMinValue(viewModel.getDaysStart(minDate, date.get(Calendar.MONTH), date.get(Calendar.YEAR)));
-        mDayNumberPicker.setMaxValue(viewModel.getDaysStart(maxDate, date.get(Calendar.MONTH), date.get(Calendar.YEAR)));
-        mMonthNumberPicker.setMinValue(viewModel.getMonthsStart(minDate, date.get(Calendar.YEAR)));
-        mMonthNumberPicker.setMaxValue(viewModel.getMonthsEnd(maxDate, date.get(Calendar.YEAR)));
-        mYearNumberPicker.setMinValue(minDate.get(Calendar.YEAR));
-        mYearNumberPicker.setMaxValue(maxDate.get(Calendar.YEAR));
+        setCorrectRangeToScroller();
     }
 
     private void styleView(TypedArray typedArray) {
@@ -146,7 +182,30 @@ public class CustomDatePicker extends FrameLayout {
         }
     }
 
-    private void setTestValues2() {
+    public void setMinDate(Calendar date) {
+        minDate = date;
+    }
+
+    public void setMaxDate(Calendar date) {
+        maxDate = date;
+    }
+
+    public void addOnDateChangedListener(OnDateChangedListener listener) {
+        onDateChangedListener = listener;
+    }
+
+    private void setCorrectRangeToScroller() {
+        int month = curDate.get(Calendar.MONTH);
+        int year = curDate.get(Calendar.YEAR);
+        mDayNumberPicker.setMinValue(viewModel.getDaysStart(minDate, month, year));
+        mDayNumberPicker.setMaxValue(viewModel.getDaysEnd(maxDate, month, year));
+        mMonthNumberPicker.setMinValue(viewModel.getMonthsStart(minDate, year));
+        mMonthNumberPicker.setMaxValue(viewModel.getMonthsEnd(maxDate, year));
+        mYearNumberPicker.setMinValue(year);
+        mYearNumberPicker.setMaxValue(year);
+    }
+
+    private void setTestValues2() throws DateRangeException {
         setDate(Calendar.getInstance());
     }
 
@@ -176,5 +235,16 @@ public class CustomDatePicker extends FrameLayout {
     private void resetDayPicker() {
         mDayNumberPicker.setMinValue(1);
         mDayNumberPicker.setMaxValue(viewModel.getDays(mMonthNumberPicker.getValue(), mYearNumberPicker.getValue()));
+    }
+
+    public interface OnDateChangedListener {
+        void onDateChanged(Calendar newDate);
+    }
+
+    public class DateRangeException extends Exception {
+        @Override
+        public String toString() {
+            return "Date object out of range";
+        }
     }
 }
