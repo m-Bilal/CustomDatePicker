@@ -7,23 +7,129 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <NumberPicker
-        android:id="@+id/number_picker"
-        android:layout_width="wrap_content"
-        android:background="#FFF"
-        android:layout_height="wrap_content"
-        android:selectionDividerHeight="100dp"/>
-
-    <com.bilal.lib.view.customdatepicker.view.CustomDatePicker
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <DatePicker xmlns:android="http://schemas.android.com/apk/res/android"
+    <DatePicker
+        android:id="@+id/date_picker"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
         android:spinnersShown="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_set_min_date"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Set Min Date"/>
+
+        <Button
+            android:id="@+id/button_set_cur_date"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Set Cur Date"/>
+
+        <Button
+            android:id="@+id/button_set_max_date"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Set Max Date"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_show_days"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Show Days"
+            android:checked="true"/>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_wrap_days"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Wrap Days"
+            android:checked="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_show_months"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Show Months"
+            android:checked="true"/>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_wrap_months"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Wrap Months"
+            android:checked="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_show_year"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Show Year"
+            android:checked="true"/>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_wrap_year"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Wrap Year"
+            android:checked="true"/>
+    </LinearLayout>
+
+    <com.bilal.lib.view.customdatepicker.view.CustomDatePicker
+        android:id="@+id/custom_date_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="12dp"
+        android:text="Current Date"/>
+
+    <TextView
+        android:id="@+id/textview_cur_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </LinearLayout>

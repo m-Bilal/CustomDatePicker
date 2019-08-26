@@ -94,11 +94,11 @@ public class CustomDatePicker extends FrameLayout {
         if (attributeSet == null) {
             return;
         }
-        setDefaultDates();
         inflateXmlView();
         TypedArray typedArray = getContext().obtainStyledAttributes(attributeSet, R.styleable.CustomDatePicker);
         styleView(typedArray);
         typedArray.recycle();
+        setDefaultDates();
     }
 
     private void setDefaultDates() {
@@ -112,7 +112,9 @@ public class CustomDatePicker extends FrameLayout {
         maxDate = Calendar.getInstance();
         maxDate.set(Calendar.DAY_OF_MONTH, 31);
         maxDate.set(Calendar.MONTH, 12);
-        minDate.set(Calendar.YEAR, curDate.get(Calendar.YEAR + 100));
+        maxDate.set(Calendar.YEAR, curDate.get(Calendar.YEAR) + 100);
+
+        setCorrectRangeToScroller();
     }
 
     public void setDate(Calendar date) throws DateRangeException {
@@ -184,14 +186,52 @@ public class CustomDatePicker extends FrameLayout {
 
     public void setMinDate(Calendar date) {
         minDate = date;
+        setCorrectRangeToScroller();
     }
 
     public void setMaxDate(Calendar date) {
         maxDate = date;
+        setCorrectRangeToScroller();
     }
 
     public void addOnDateChangedListener(OnDateChangedListener listener) {
         onDateChangedListener = listener;
+    }
+
+    public void showDays(boolean showDays) {
+        if (showDays) {
+            mDayNumberPicker.setVisibility(VISIBLE);
+        } else {
+            mDayNumberPicker.setVisibility(GONE);
+        }
+    }
+
+    public void showMonths(boolean showMonths) {
+        if (showMonths) {
+            mMonthNumberPicker.setVisibility(VISIBLE);
+        } else {
+            mMonthNumberPicker.setVisibility(GONE);
+        }
+    }
+
+    public void showYears(boolean showYears) {
+        if (showYears) {
+            mYearNumberPicker.setVisibility(VISIBLE);
+        } else {
+            mYearNumberPicker.setVisibility(GONE);
+        }
+    }
+
+    public void wrapDays(boolean wrapDays) {
+        mDayNumberPicker.setWrapSelectorWheel(wrapDays);
+    }
+
+    public void wrapMonths(boolean wrapMonts) {
+        mMonthNumberPicker.setWrapSelectorWheel(wrapMonts);
+    }
+
+    public void wrapYears(boolean wrapYears) {
+        mYearNumberPicker.setWrapSelectorWheel(wrapYears);
     }
 
     private void setCorrectRangeToScroller() {
@@ -201,8 +241,8 @@ public class CustomDatePicker extends FrameLayout {
         mDayNumberPicker.setMaxValue(viewModel.getDaysEnd(maxDate, month, year));
         mMonthNumberPicker.setMinValue(viewModel.getMonthsStart(minDate, year));
         mMonthNumberPicker.setMaxValue(viewModel.getMonthsEnd(maxDate, year));
-        mYearNumberPicker.setMinValue(year);
-        mYearNumberPicker.setMaxValue(year);
+        mYearNumberPicker.setMinValue(minDate.get(Calendar.YEAR));
+        mYearNumberPicker.setMaxValue(maxDate.get(Calendar.YEAR));
     }
 
     private void setTestValues2() throws DateRangeException {
