@@ -22,14 +22,6 @@ public class CustomDatePickerViewModel {
         }
     }
 
-    public int getDays(int month, int year) {
-        if (isLeapYear(year)) {
-            return DAYS_LEAP_YEAR[month];
-        } else {
-            return DAYS[month];
-        }
-    }
-
     public int getDaysStart(Calendar minDate, int month, int year) {
         return minDate.get(Calendar.YEAR) == year && month == minDate.get(Calendar.MONTH) ?
                 minDate.get(Calendar.DAY_OF_MONTH) : 1;
@@ -51,5 +43,21 @@ public class CustomDatePickerViewModel {
 
     public String[] getMonths() {
         return MONTHS;
+    }
+
+    public String[] getMonths(Calendar minDate, Calendar curDate) {
+        if (curDate.get(Calendar.YEAR) == minDate.get(Calendar.YEAR)) {
+            return buildMonthsArray(minDate.get(Calendar.MONTH), 11);
+        } else {
+            return getMonths();
+        }
+    }
+
+    private String[] buildMonthsArray(int start, int end) {
+        String[] array = new String[12];
+        for (int i = 0; i < 12; i++) {
+            array[i] = MONTHS[(start + i) % 12];
+        }
+        return array;
     }
 }
