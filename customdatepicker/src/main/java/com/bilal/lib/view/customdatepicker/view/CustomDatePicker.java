@@ -17,6 +17,8 @@ import java.util.Calendar;
 
 public class CustomDatePicker extends FrameLayout {
 
+    public static final String TAG = "CustomDatePicker";
+
     private NumberPicker mDayNumberPicker;
     private NumberPicker mMonthNumberPicker;
     private NumberPicker mYearNumberPicker;
@@ -200,12 +202,12 @@ public class CustomDatePicker extends FrameLayout {
             throw new DateRangeException();
         }
         if (date.compareTo(curDate) > 0) {
-            curDate = date;
+            curDate.setTime(date.getTime());
             if (onDateChangedListener != null) {
                 onDateChangedListener.onDateChanged(curDate);
             }
         }
-        minDate = date;
+        minDate.setTime(date.getTime());
         setCorrectRangeToScroller();
     }
 
@@ -218,12 +220,12 @@ public class CustomDatePicker extends FrameLayout {
             throw new DateRangeException();
         }
         if (date.compareTo(curDate) < 0) {
-            curDate = date;
+            curDate.setTime(date.getTime());
             if (onDateChangedListener != null) {
                 onDateChangedListener.onDateChanged(curDate);
             }
         }
-        maxDate = date;
+        maxDate.setTime(date.getTime());
         setCorrectRangeToScroller();
     }
 
@@ -287,12 +289,12 @@ public class CustomDatePicker extends FrameLayout {
             return;
         }
         if (date.compareTo(curDate) > 0) {
-            curDate = date;
+            curDate.setTime(date.getTime());
             if (onDateChangedListener != null) {
                 onDateChangedListener.onDateChanged(curDate);
             }
         }
-        minDate = date;
+        minDate.setTime(date.getTime());
         setCorrectRangeToScroller();
     }
 
@@ -309,12 +311,12 @@ public class CustomDatePicker extends FrameLayout {
             return;
         }
         if (date.compareTo(curDate) < 0) {
-            curDate = date;
+            curDate.setTime(date.getTime());
             if (onDateChangedListener != null) {
                 onDateChangedListener.onDateChanged(curDate);
             }
         }
-        maxDate = date;
+        maxDate.setTime(date.getTime());
         setCorrectRangeToScroller();
     }
 
