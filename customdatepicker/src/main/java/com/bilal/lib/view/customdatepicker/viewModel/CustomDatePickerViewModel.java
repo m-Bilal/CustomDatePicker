@@ -45,8 +45,8 @@ public class CustomDatePickerViewModel {
         return MONTHS;
     }
 
-    public String[] getMonths(Calendar minDate, Calendar curDate) {
-        if (curDate.get(Calendar.YEAR) == minDate.get(Calendar.YEAR)) {
+    public String[] getMonths(Calendar minDate, int curYear) {
+        if (curYear == minDate.get(Calendar.YEAR)) {
             return buildMonthsArray(minDate.get(Calendar.MONTH), 11);
         } else {
             return getMonths();
